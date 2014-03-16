@@ -1,0 +1,20 @@
+!!!
+html
+  head
+    block head
+      block title
+        title alena tomasek
+      block meta
+        meta(name='description', content='')
+        meta(name='keywords', content='')
+      link(rel='stylesheet', href='/css/bootstrap-theme.min.css')
+      link(rel='stylesheet', href='/css/bootstrap.min.css')
+      link(rel='stylesheet', href='/css/font-awesome.min.css')
+      link(rel='stylesheet', href='/css/own.css')
+      script(src='//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js')
+      
+  body(style="font-family: sans-serif; font-size:13pt; margin: 8px 8px 8px 8px")
+    include header
+    block content
+
+    include footer

@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  .container.col-md-12.column(style="background-color: #C0C0C0")
+    .row.clearfix
+      .col-md-12.column
+        div(style="height: 25px")
+    .row.clearfix
+      .col-md-4.column
+        include navbar
+      .col-md-8.column(align="center",style="background-color: #{bcblock}; min-height:450px;")
+        p
+        .col-md-4.column
+          img(class="img-responsive",src="image/portrait.jpg")
+        .col-md-8.column
+          p
+          address(align="left")
+            strong alena tomasek
+            br
+            | marktäckerstr. 66
+            br
+            | 90427 nürnberg
+            br
+            abbr(title='Telefon') Tel: 
+            | 0911 / 31 37 11
+            br
+            a(href='mailto:email@alena-tomasek.de') email@alena-tomasek.de
+        br
+        p öffnungszeiten mittwoch und donnerstag 10.00 – 18.00 uhr
+        p
+        img(class="img-responsive",src="image/Anfahrt.jpg")
+        p
+
+
+

@@ -1,0 +1,21 @@
+.carousel-caption { position: relative; } 
+.container{
+    max-width:800px;
+    margin:0 auto;/*make it centered*/
+}
+
+h1.logo {
+  font-family: "Tahoma";
+  font-size: 50px;
+  font-weight: normal;
+	margin: 0.3em 0 0px; 
+}
+
+tr.tableName {
+	font-size: 12px;
+}
+
+p.bla{
+	font-size: 12px; 
+	color: #555555;
+}

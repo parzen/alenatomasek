@@ -1,35 +1,19 @@
 {
-  "name": "OpenShift-Sample-App",
-  "version": "1.0.0",
-  "description": "OpenShift Sample Application",
-  "keywords": [
-    "OpenShift",
-    "Node.js",
-    "application",
-    "openshift"
-  ],
-  "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
+  "name": "mama-homepage",
+  "version": "0.0.1",
+  "description": "alena tomasek homepage",
+  "main": "app.js",
+  "scripts": {
+    "start": "app.js"
   },
-  "homepage": "http://www.openshift.com/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/openshift/origin-server"
-  },
-
-  "engines": {
-    "node": ">= 0.6.0",
-    "npm": ">= 1.0.0"
-  },
-
+  "author": "Adrian Tomasek",
   "dependencies": {
-    "express": "~3.4.4"
+    "mongoose": "~3.6.14",
+    "express": "3.4.0",
+    "jade": "0.35.0",
+    "mongodb": "1.3.19"
   },
-  "devDependencies": {},
-  "bundleDependencies": [],
-
-  "private": true,
-  "main": "server.js"
+  "engines": {
+    "node": "0.10.x"
+	}
 }

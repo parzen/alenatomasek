@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  .container.col-md-12.column(style="background-color: #C0C0C0")
+    .row.clearfix
+      .col-md-12.column
+        div(style="height: 25px")
+    .row.clearfix
+      .col-md-4.column
+        include navbar
+      .col-md-8.column(style="background-color: #{bcblock}; min-height:450px;")
+        p
+        table
+          tr(width='300')
+            td neue galerie in erlangen 2007
+            td kritik &nbsp; bild1 &nbsp; bild2
+          tr 
+            td kleines atelier in fürth 2006
+            td kritik
+          tr 
+            td grafik museum bad steben 2008
+            td kritik &nbsp; bild1
+          tr 
+            td geschichten... villa dessauer 2008
+            td kritik
+        p(align="left") 
+          strong geplante und aktuelle Ausstellungen
+        ul(align="left")
+          li 1. Mai - 13. Juni 2010 : BBK-Stadtgalerie Villa Dessauer-Beteiligung
+          li 1. - 29. Dezember 2010: BBK-Neues Rathaus Bayreuth- Beteiligung
+          li 5. - 30. Dezember 2010 : KVE-Kunstpalais Stutterheim-Beteiligung
+          li 3. Dezember 2010 - 9.Januar 2011: Galerie Röver, Großweidenmühlstr. 19, Nürnberg
+          li 14. Januar - 6. Februar 2011: Galerie Bürgerhaus, Königsplatz 29A, Schwabach
+        
+        a#modal-788908.btn(href='#modal-container-788908', role='button', data-toggle='modal') Launch demo modal
+           #modal-container-788908.modal.fade(role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                  h4#myModalLabel.modal-title
+                    | Modal title
+                .modal-body
+                  | ...
+                .modal-footer
+                  button.btn.btn-default(type='button', data-dismiss='modal') Schließen

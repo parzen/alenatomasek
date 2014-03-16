@@ -1,0 +1,43 @@
+extends layout
+
+block content
+  .container.col-md-12.column(style="background-color: #C0C0C0")
+    .row.clearfix
+      .col-md-12.column
+        div(style="height: 25px")
+    .row.clearfix
+      .col-md-4.column
+        include navbar
+      .col-md-8.column(align="center",style="background-color: #{bcblock}; min-height:450px;")
+          p
+          #carousel-214733.carousel.slide
+            ol.carousel-indicators
+              li.active(data-slide-to='0', data-target='#carousel-214733')
+              li(data-slide-to='1', data-target='#carousel-214733')
+              li(data-slide-to='2', data-target='#carousel-214733')
+            .carousel-inner
+              .item.active
+                img(alt='', src='http://alena-tomasek.de/grafik/Leben.jpg')
+                .carousel-caption
+                  h4
+                    | Arabia felix
+                  p
+                    | Aquatintaradierung | 2003
+              .item
+                img(alt='', src='http://alena-tomasek.de/grafik/Zeit_rot.jpg')
+                .carousel-caption
+                  h4
+                    | Das Leben | 
+                  p
+                    | Aquatintaradierung | 2001
+              .item
+                img(alt='', src='http://alena-tomasek.de/grafik/wanderung.jpg')
+                .carousel-caption
+                  h4
+                    | Versperrte Wege
+                  p
+                    | Aquatintaradierung | 2007
+            a.left.carousel-control(href='#carousel-214733', data-slide='prev')
+              span.glyphicon.glyphicon-chevron-left
+            a.right.carousel-control(href='#carousel-214733', data-slide='next')
+              span.glyphicon.glyphicon-chevron-right

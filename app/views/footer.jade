@@ -1,0 +1,18 @@
+.container.col-md-12.column(style="background-color: #C0C0C0")
+  .row.clearfix
+      .col-md-4.column
+      .col-md-8.column(align="center",style="background-color: #{bcblock}; padding: 3px 3px 3px 3px")
+        if footerimg != ""
+          img(width="100%", class="img-responsive",src="#{footerimg}")
+.container.col-md-12.column
+  .row.clearfix(style="padding: 3px 3px 3px 3px")
+    .col-md-4.column
+    .col-md-8.column
+      .footer
+        p(style="font-family: sans-serif; font-size:11pt") &copy;&nbsp; adrian tomasek &nbsp;2014
+
+script(src='/js/bootstrap.min.js')
+script(src='/js/socket.io.min.js')
+script(type='text/javascript')
+
+block footer
