@@ -4,7 +4,6 @@ var express   = require("express");
 var app       = express();
 var config    = require('./config/config');
 var mongoose  = require('mongoose');
-var fs        = require('fs');
 var server    = require('http').createServer(app);
 
 /**
@@ -68,14 +67,6 @@ db.on('error', function() {
 */
 require('./init/express')(app, config, User);
 require('./init/routes')(app);
-
-var modelsPath = __dirname + '/app/models';
-fs.readdirSync(modelsPath)
-	.forEach(function(file) {
-		if (file.indexOf('.js') >= 0) {
-			require(modelsPath + '/' + file);
-		}
-	});
 
 /**
 * Authentication middleware.
