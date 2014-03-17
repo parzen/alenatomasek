@@ -1,0 +1,18 @@
+extends layout
+block content
+  .container.col-md-12.column(style="background-color: #C0C0C0")
+  .row.clearfix
+    .col-md-12.column
+      form(action="/signup", method="POST")
+        fieldset
+          legend Sign up
+          p
+            label Name
+            input(name="user[name]", type="text")
+          p
+            label Password
+            input(name="user[password]", type="password")
+          p
+            button Submit
+          p
+            a(href="/") Go back

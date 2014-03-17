@@ -18,3 +18,9 @@ html
     block content
 
     include footer
+
+    if (authenticated)
+      .container.col-md-12.column(style="background-color: #{bcheader};")
+        .row.clearfix
+          p Welcome back, #{me.name} | 
+            a(href="/logout") Logout

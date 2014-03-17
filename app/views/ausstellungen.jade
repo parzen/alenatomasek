@@ -31,3 +31,28 @@ block content
           li 5. - 30. Dezember 2010 : KVE-Kunstpalais Stutterheim-Beteiligung
           li 3. Dezember 2010 - 9.Januar 2011: Galerie Röver, Großweidenmühlstr. 19, Nürnberg
           li 14. Januar - 6. Februar 2011: Galerie Bürgerhaus, Königsplatz 29A, Schwabach
+        if (authenticated)
+          hr(style="border-style: dashed")
+          form(role='form', action="/ausstellungen", method="POST")
+            .form-group
+              label Ausstellungstitel
+              input.form-control(name="ausstellung[titel]", type='text')
+            .form-group
+              label Ort
+              input.form-control(name="ausstellung[ort]", type='text')
+            .form-group
+              label Von
+              input.form-control(name="ausstellung[datumVon]", type='date')
+            .form-group
+              label Bis
+              input.form-control(name="ausstellung[datumBis]", type='date')
+            .form-group
+              label Kritik
+              input#exampleInputFile(name="austellung[kritik]", type='file')
+            .form-group
+              label Bilder
+              input#exampleInputFile(name="austellung[bilder]", type='file')
+            .checkbox
+              label Beteiligung
+                input(name="ausstellung[beteiligung]", type='checkbox')
+            button.btn.btn-default(type='submit') Submit
