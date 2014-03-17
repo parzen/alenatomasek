@@ -5,7 +5,8 @@ var config = {
     root: rootPath,
     app: {
       name: 'mamahomepage'
-    }
+    },
+    db: 'mongodb://localhost/alenatomasek'
 };
 
 module.exports = config;
