@@ -10,49 +10,112 @@ block content
         include navbar
       .col-md-8.column(style="background-color: #{bcblock}; min-height:450px;")
         p
-        table
-          tr(width='300')
-            td neue galerie in erlangen 2007
-            td kritik &nbsp; bild1 &nbsp; bild2
-          tr 
-            td kleines atelier in fürth 2006
-            td kritik
-          tr 
-            td grafik museum bad steben 2008
-            td kritik &nbsp; bild1
-          tr 
-            td geschichten... villa dessauer 2008
-            td kritik
-        p(align="left") 
-          strong geplante und aktuelle Ausstellungen
-        ul(align="left")
-          li 1. Mai - 13. Juni 2010 : BBK-Stadtgalerie Villa Dessauer-Beteiligung
-          li 1. - 29. Dezember 2010: BBK-Neues Rathaus Bayreuth- Beteiligung
-          li 5. - 30. Dezember 2010 : KVE-Kunstpalais Stutterheim-Beteiligung
-          li 3. Dezember 2010 - 9.Januar 2011: Galerie Röver, Großweidenmühlstr. 19, Nürnberg
-          li 14. Januar - 6. Februar 2011: Galerie Bürgerhaus, Königsplatz 29A, Schwabach
+
+        #accordion.panel-group
+          if(ausstellungen)
+            each ausstellung, i in ausstellungen
+              .panel.panel-success
+                .panel-heading
+                  h4.panel-title
+                    a(data-toggle='collapse', data-parent='#accordion', href='#'+ausstellung._id)
+                      | #{ausstellung.titel} #{ausstellung.year}
+                      if(ausstellung.beteiligung)
+                        span(style='color: #428bca;')
+                          i  - Beteiligung
+                div(id=ausstellung._id)(class=i === 0 ? "in" : undefined).panel-collapse.collapse
+                  .panel-body
+                    p
+                      span.glyphicon.glyphicon-calendar
+                      | &nbsp; #{ausstellung.datumVon} - #{ausstellung.datumBis}
+                    address
+                      strong #{ausstellung.titel}
+                      br
+                      | #{ausstellung.strasse}
+                      br
+                      | #{ausstellung.plzstadt}
+                      br
+                      a(href='http://'+ausstellung.homepage, target='_blank') #{ausstellung.homepage}
+                    a#modal-kritik.btn.btn-primary.btn-default(href='#modal-container-kritik', role='button', data-toggle='modal')
+                      span.glyphicon.glyphicon-comment
+                      | &nbsp; Kritik
+                    &nbsp; 
+                    a#modal-bilder.btn.btn-primary.btn-default(href='#modal-container-bilder', role='button', data-toggle='modal')
+                      span.glyphicon.glyphicon-picture
+                      | &nbsp; Bilder
+                    #modal-container-bilder.modal.fade(role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+                      .modal-dialog
+                        .modal-content
+                          .modal-header
+                            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                            h4#myModalLabel.modal-title
+                              | Bilder
+                          .modal-body
+                            #carousel-574899.carousel.slide
+                              ol.carousel-indicators
+                                li.active(data-slide-to='0', data-target='#carousel-574899')
+                                li(data-slide-to='1', data-target='#carousel-574899')
+                                li(data-slide-to='2', data-target='#carousel-574899')
+                              .carousel-inner
+                                .item.active
+                                  img(alt='', src='http://lorempixel.com/1600/500/sports/1')
+                                  .carousel-caption
+                                    h4
+                                      | First Thumbnail label
+                                    p
+                                      | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+                                .item
+                                  img(alt='', src='http://lorempixel.com/1600/500/sports/2')
+                                  .carousel-caption
+                                    h4
+                                      | Second Thumbnail label
+                                    p
+                                      | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+                                .item
+                                  img(alt='', src='http://lorempixel.com/1600/500/sports/3')
+                                  .carousel-caption
+                                    h4
+                                      | Third Thumbnail label
+                                    p
+                                      | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+                              a.left.carousel-control(href='#carousel-574899', data-slide='prev')
+                                span.glyphicon.glyphicon-chevron-left
+                              a.right.carousel-control(href='#carousel-574899', data-slide='next')
+                                span.glyphicon.glyphicon-chevron-right
+                          .modal-footer
+                            button.btn.btn-default(type='button', data-dismiss='modal') Close
+                            button.btn.btn-primary(type='button') Save changes
+
         if (authenticated)
           hr(style="border-style: dashed")
+          if (errortext)
+            p(style="color: #d9534f")
+              strong #{errortext}
           form(role='form', action="/ausstellungen", method="POST")
             .form-group
               label Ausstellungstitel
-              input.form-control(name="ausstellung[titel]", type='text')
+              input.form-control(name="ausstellung[titel]", type='text', value=inputs.titel === undefined ? "" : inputs.titel)
             .form-group
-              label Ort
-              input.form-control(name="ausstellung[ort]", type='text')
+              label Straße
+              input.form-control(name="ausstellung[strasse]", type='text', value=inputs.strasse === undefined ? "" : inputs.strasse)
+            .form-group
+              label PLZ und Stadt
+              input.form-control(name="ausstellung[plzstadt]", type='text', value=inputs.plzstadt === undefined ? "" : inputs.plzstadt)
+            .form-group
+              label Homepage
+              input.form-control(name="ausstellung[homepage]", type='text', value=inputs.homepage === undefined ? "" : inputs.homepage)
             .form-group
               label Von
-              input.form-control(name="ausstellung[datumVon]", type='date')
+              input.form-control(name="ausstellung[datumVon]", type='date', value=inputs.datumVon === undefined ? "" : inputs.datumVon)
             .form-group
               label Bis
-              input.form-control(name="ausstellung[datumBis]", type='date')
+              input.form-control(name="ausstellung[datumBis]", type='date', value=inputs.datumBis === undefined ? "" : inputs.datumBis)
             .form-group
               label Kritik
-              input#exampleInputFile(name="austellung[kritik]", type='file')
+              input#exampleInputFile(name="ausstellung[kritik]", type='file', value=inputs.kritik === undefined ? "" : inputs.kritik)
             .form-group
               label Bilder
-              input#exampleInputFile(name="austellung[bilder]", type='file')
+              input#exampleInputFile(name="ausstellung[bilder]", type='file', value=inputs.bilder === undefined ? "" : inputs.bilder)
             .checkbox
               label Beteiligung
-                input(name="ausstellung[beteiligung]", type='checkbox')
+                input(name="ausstellung[beteiligung]", type='checkbox', value=inputs.beteiligung === undefined ? "" : inputs.beteiligung)
             button.btn.btn-default(type='submit') Submit

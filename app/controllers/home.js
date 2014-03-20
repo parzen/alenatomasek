@@ -48,16 +48,6 @@ exports.biografie = function(req, res) {
   });
 };
 
-exports.ausstellungen = function(req, res) {
-  res.render('ausstellungen', {
-  	footerimg: "image/ausstellungen.jpg",
-  	headerimg: "image/ausstellungen_o.jpg",
-  	bcblock: "#bfc6b0",
-  	bcheader: "#9fa97b",
-    path: "ausstellungen"
-  });
-};
-
 exports.impressum = function(req, res) {
   res.render('impressum', {
   	footerimg: "image/impressum.jpg",

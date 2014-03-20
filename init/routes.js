@@ -9,6 +9,5 @@ module.exports = function(app) {
   app.get('/grafik', home.grafik);
   app.get('/keramik', home.keramik);
   app.get('/biografie', home.biografie);
-  app.get('/ausstellungen', home.ausstellungen);
   app.get('/impressum', home.impressum);
 }

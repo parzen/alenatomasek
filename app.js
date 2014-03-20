@@ -5,6 +5,7 @@ var app       = express();
 var config    = require('./config/config');
 var mongoose  = require('mongoose');
 var server    = require('http').createServer(app);
+var helper    = require('./app/controllers/helper');
 
 /**
 * Define model.
@@ -17,25 +18,33 @@ var User = mongoose.model('User', new Schema({
   },
   password: {
    type: String,
-    index: true 
-  }
+   index: true 
+ }
 }));
-var Ausstellung = mongoose.model('Austellung', new Schema({
+var Ausstellung = mongoose.model('Ausstellung', new Schema({
   titel: {
     type: String,
     default: '',
     unique: true
   },
-  ort: {
+  strasse: {
+    type: String,
+    default: ''
+  },
+  plzstadt: {
+    type: String,
+    default: ''
+  },
+  homepage: {
     type: String,
     default: ''
   },
   datumVon: {
-    type: Date,
+    type: String,
     default: ''
   },
   datumBis: {
-    type: Date,
+    type: String,
     default: ''
   },
   beteiligung: {
@@ -85,7 +94,43 @@ app.get('/login/:signupEmail', function (req, res) {
 });
 
 /**
-* Login process route
+* Logout route.
+*/
+app.get('/logout', function (req, res) {
+  req.session.loggedIn = null;
+  res.redirect('/');
+});
+
+/**
+* Get route
+*/
+app.get('/ausstellungen', function (req, res) {
+  Ausstellung.find({}, function (err, docs) {
+    if (err) return next(err);
+
+    docs2 = helper.ausstellungenFormatter(docs);
+
+    res.render('ausstellungen', {
+      footerimg: "image/ausstellungen.jpg",
+      headerimg: "image/ausstellungen_o.jpg",
+      bcblock: "#bfc6b0",
+      bcheader: "#9fa97b",
+      path: "ausstellungen",
+      ausstellungen: docs2,
+      inputs: ""
+    });
+  });
+});
+
+/**
+* Signup route
+*/
+app.get('/signup', function (req, res) {
+	res.render('signup');
+});
+
+/**
+* Post routes
 */
 app.post('/login', function (req, res) {
   User.findOne({ name: req.body.user.name, password: req.body.user.password},
@@ -97,26 +142,6 @@ app.post('/login', function (req, res) {
   });
 });
 
-
-/**
-* Logout route.
-*/
-app.get('/logout', function (req, res) {
-  req.session.loggedIn = null;
-  res.redirect('/');
-});
-
-
-/**
-* Signup route
-*/
-app.get('/signup', function (req, res) {
-	res.render('signup');
-});
-
-/**
-* Signup processing route
-*/
 app.post('/signup', function (req, res, next) {
   var user = new User(req.body.user)
   user.save(function (err) {
@@ -124,12 +149,51 @@ app.post('/signup', function (req, res, next) {
     res.redirect('/login/' + user.name);
   });
 });
+
 app.post('/ausstellungen', function (req, res, next) {
-  var aus = new Ausstellung(req.body.ausstellung)
-  aus.save(function (err) {
-    if (err) return next(err);
-    res.redirect('/ausstellungen');
-  });
+  var errortext = '';
+  var error = false;
+  if(req.body.ausstellung.datumVon == '') {
+    error = true;
+    errortext = "Kein Datum 'Von' angegeben!";
+  }
+  if(!error && req.body.ausstellung.datumBis == '') {
+    error = true;
+    errortext = "Kein Datum 'Bis' angegeben!";
+  }
+  if(!error && req.body.ausstellung.titel == '') {
+    error = true;
+    errortext = "Kein titel angegeben!";
+  }
+
+  if(error) {
+    Ausstellung.find({}, function (err, docs) {
+      if (err) return next(err);
+
+      docs2 = helper.ausstellungenFormatter(docs);
+
+      return res.render('ausstellungen', {
+        footerimg: "image/ausstellungen.jpg",
+        headerimg: "image/ausstellungen_o.jpg",
+        bcblock: "#bfc6b0",
+        bcheader: "#9fa97b",
+        path: "ausstellungen",
+        ausstellungen: docs2,
+        inputs: req.body.ausstellung,
+        errortext: errortext
+      });
+    });
+  } else {
+
+    req.body.ausstellung.datumVon = helper.dateFormatter(req.body.ausstellung.datumVon);
+    req.body.ausstellung.datumBis = helper.dateFormatter(req.body.ausstellung.datumBis);
+
+    var aus = new Ausstellung(req.body.ausstellung)
+    aus.save(function (err) {
+      if (err) return next(err);
+      res.redirect('/ausstellungen');
+    });
+  }
 });
 
 
@@ -137,7 +201,7 @@ app.post('/ausstellungen', function (req, res, next) {
 * Start server
 */
 server.listen( port, ipaddress, function() {
-    console.log((new Date()) + ' Server is listening on port ' + port);
+  console.log((new Date()) + ' Server is listening on port ' + port);
 });
 console.log("Listening to " + ipaddress + ":" + port + "...");
 
