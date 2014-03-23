@@ -6,6 +6,8 @@ var config    = require('./config/config');
 var mongoose  = require('mongoose');
 var server    = require('http').createServer(app);
 var helper    = require('./app/controllers/helper');
+var fs        = require('fs');
+var ipPort    = "http://" + ipaddress + ":" + port;
 
 /**
 * Define model.
@@ -13,8 +15,8 @@ var helper    = require('./app/controllers/helper');
 var Schema = mongoose.Schema
 var User = mongoose.model('User', new Schema({
   name: { 
-  	type: String, 
-  	unique: true 
+    type: String, 
+    unique: true 
   },
   password: {
    type: String,
@@ -52,12 +54,10 @@ var Ausstellung = mongoose.model('Ausstellung', new Schema({
     default: false
   },
   kritik: {
-    type: String,
-    default: ''
+    type: [String]
   },
   bilder: {
-    type: String,
-    default: ''
+    type: [String]
   }
 }));
 
@@ -68,7 +68,7 @@ var Ausstellung = mongoose.model('Ausstellung', new Schema({
 mongoose.connect(config.db);
 var db = mongoose.connection;
 db.on('error', function() {
-	throw new Error('unable to connect to database at ' + config.db);
+  throw new Error('unable to connect to database at ' + config.db);
 });
 
 /**
@@ -126,7 +126,7 @@ app.get('/ausstellungen', function (req, res) {
 * Signup route
 */
 app.get('/signup', function (req, res) {
-	res.render('signup');
+  res.render('signup');
 });
 
 /**
@@ -150,50 +150,241 @@ app.post('/signup', function (req, res, next) {
   });
 });
 
+
 app.post('/ausstellungen', function (req, res, next) {
   var errortext = '';
   var error = false;
-  if(req.body.ausstellung.datumVon == '') {
+  var b = req.body.ausstellung;
+  if(b.datumVon == '') {
     error = true;
     errortext = "Kein Datum 'Von' angegeben!";
   }
-  if(!error && req.body.ausstellung.datumBis == '') {
+  if(!error && b.datumBis == '') {
     error = true;
     errortext = "Kein Datum 'Bis' angegeben!";
   }
-  if(!error && req.body.ausstellung.titel == '') {
+  if(!error && b.titel == '') {
     error = true;
     errortext = "Kein titel angegeben!";
   }
+  Ausstellung.find({titel: b.titel}, function (err, titelDoc) {
+    if(titelDoc.length > 0) {
+      error = true;
+      errortext = "Diesen Titel gibt es bereits!";
+    }
 
-  if(error) {
-    Ausstellung.find({}, function (err, docs) {
-      if (err) return next(err);
+    console.log("req.files");
+    console.log(req.files);
 
-      docs2 = helper.ausstellungenFormatter(docs);
 
-      return res.render('ausstellungen', {
-        footerimg: "image/ausstellungen.jpg",
-        headerimg: "image/ausstellungen_o.jpg",
+    if(error) {
+      Ausstellung.find({}, function (err, docs) {
+        if (err) return next(err);
+
+        docs2 = helper.ausstellungenFormatter(docs);
+
+        return res.render('ausstellungen', {
+          footerimg: "/image/ausstellungen.jpg",
+          headerimg: "/image/ausstellungen_o.jpg",
+          bcblock: "#bfc6b0",
+          bcheader: "#9fa97b",
+          path: "ausstellungen",
+          ausstellungen: docs2,
+          inputs: b,
+          errortext: errortext
+        });
+      });
+    } else {
+      b.datumVon = helper.dateFormatter(b.datumVon);
+      b.datumBis = helper.dateFormatter(b.datumBis);
+
+      // New Ausstellung opject
+      var aus = new Ausstellung(b);
+
+      // Read Kritik
+      fs.readFile(req.files.ausstellung.kritik.path, function (err, data) {
+        var newPath = __dirname + "/public/uploads/"+req.files.ausstellung.kritik.name;
+        console.log("newPath: " + newPath);
+        fs.writeFile(newPath, data, function (err) {
+          if (req.files.ausstellung.kritik.name != '' && err) throw err;
+
+          if (req.files.ausstellung.kritik.name != '') {
+            aus.kritik.push("/uploads/"+req.files.ausstellung.kritik.name);
+          }
+
+          // Read Bild
+          fs.readFile(req.files.ausstellung.bilder.path, function (err, data) {
+            var newPath = __dirname + "/public/uploads/"+req.files.ausstellung.bilder.name;
+            console.log("newPath: " + newPath);
+            fs.writeFile(newPath, data, function (err) {
+              if (req.files.ausstellung.bilder.name != '' && err) throw err;
+
+              if (req.files.ausstellung.bilder.name != '') {
+                aus.bilder.push("/uploads/"+req.files.ausstellung.bilder.name); 
+              }
+
+              // Write to Database
+              console.log("Write New Ausstellung in db:")
+              console.log(aus)
+              aus.save(function (err) {
+                if (err) return next(err);
+                res.redirect('/ausstellungen');
+              });
+            });
+          });
+        });
+      });
+    }
+  });
+});
+
+/**
+* Edit routes
+*/
+app.get("/edit/ausstellung/:id" , function(req,res) {
+  Ausstellung.find({ _id: req.params.id }, function (err, docs) {
+    console.log(docs[0])
+    res.render("ausedit", { 
+        footerimg: "/image/ausstellungen.jpg",
+        headerimg: "/image/ausstellungen_o.jpg",
         bcblock: "#bfc6b0",
         bcheader: "#9fa97b",
         path: "ausstellungen",
-        ausstellungen: docs2,
-        inputs: req.body.ausstellung,
-        errortext: errortext
+        inputs: docs[0]});
+  });
+});
+
+/**
+* Update routes
+*/
+app.put("/update/ausstellung/:id", function(req,res) {
+  var b = req.body.ausstellung;
+  console.log("Update Ausstellung:")
+  console.log(b)
+
+  Ausstellung.update(
+    { _id: req.params.id},
+    { titel: b.titel, 
+      strasse: b.strasse,
+      plzstadt: b.plzstadt,
+      homepage: b.homepage,
+      datumVon: b.datumVon,
+      datumBis: b.datumBis,
+      beteiligung: b.beteiligung
+      //,kritik: b.kritik,
+      //bilder: b.bilder
+      },
+    function (err) {
+      if(err) console.log(err)
+      res.redirect('/ausstellungen');
+  });
+});
+app.put("/new/kritik/ausstellung/:id", function(req,res) {
+  console.log(req.files)
+
+  Ausstellung.find({ _id: req.params.id }, function (err, docs) {
+    console.log(docs[0])
+    
+    fs.readFile(req.files.neueKritik.path, function (err, data) {
+      var newPath = __dirname + "/public/uploads/"+req.files.neueKritik.name;
+      console.log("newPath: " + newPath);
+      fs.writeFile(newPath, data, function (err) {
+        if (req.files.neueKritik.name != '' && err) throw err;
+
+        if (req.files.neueKritik.name != '') {
+          docs[0].kritik.push("/uploads/"+req.files.neueKritik.name);
+        }
+
+        console.log("Neue Kritik:")
+        console.log(docs[0])
+        Ausstellung.update(
+          { _id: req.params.id },
+          { kritik: docs[0].kritik },
+          function (err) {
+            if(err) console.log(err)
+            res.redirect('/edit/ausstellung/'+req.params.id);
+        });
       });
     });
-  } else {
+  });
+});
+app.put("/new/bild/ausstellung/:id", function(req,res) {
+  console.log(req.files)
 
-    req.body.ausstellung.datumVon = helper.dateFormatter(req.body.ausstellung.datumVon);
-    req.body.ausstellung.datumBis = helper.dateFormatter(req.body.ausstellung.datumBis);
+  Ausstellung.find({ _id: req.params.id }, function (err, docs) {
+    console.log(docs[0])
+    
+    fs.readFile(req.files.neuesBild.path, function (err, data) {
+      var newPath = __dirname + "/public/uploads/"+req.files.neuesBild.name;
+      console.log("newPath: " + newPath);
+      fs.writeFile(newPath, data, function (err) {
+        if (req.files.neuesBild.name != '' && err) throw err;
 
-    var aus = new Ausstellung(req.body.ausstellung)
-    aus.save(function (err) {
-      if (err) return next(err);
-      res.redirect('/ausstellungen');
+        if (req.files.neuesBild.name != '') {
+          docs[0].bilder.push("/uploads/"+req.files.neuesBild.name);
+        }
+
+        console.log("Neues Bild:")
+        console.log(docs[0])
+        Ausstellung.update(
+          { _id: req.params.id },
+          { bilder: docs[0].bilder },
+          function (err) {
+            if(err) console.log(err)
+            res.redirect('/edit/ausstellung/'+req.params.id);
+        });
+      });
     });
-  }
+  });
+});
+
+/**
+* Destroy routes
+*/
+app.delete("/delete/ausstellung/:id", function(req,res) {
+  console.log("Delete Ausstellung:")
+  console.log(req.params.id)
+  Ausstellung.remove({_id: req.params.id}, function (err) {
+    res.redirect('/ausstellungen');
+  });
+});
+app.delete("/delete/kritik/ausstellung/:id/*", function(req,res) {
+  console.log("Kritik zu entfernen: " + req.params[0])
+  Ausstellung.find({ _id: req.params.id }, function (err, docs) {
+    console.log("Kritik davor: " + docs[0])
+    var index = docs[0].kritik.indexOf(req.params[0]);
+    if (index > -1) {
+      docs[0].kritik.splice(index, 1);
+    }
+    console.log("Kritik danach: " + docs[0])
+
+    Ausstellung.update(
+      { _id: req.params.id },
+      { kritik: docs[0].kritik },
+      function (err) {
+        if(err) console.log(err)
+          res.redirect('/edit/ausstellung/'+req.params.id);
+      });
+  });
+});
+app.delete("/delete/bild/ausstellung/:id/*", function(req,res) {
+  console.log("Bild zu entfernen: " + req.params[0])
+  Ausstellung.find({ _id: req.params.id }, function (err, docs) {
+    console.log("Bild davor: " + docs[0])
+    var index = docs[0].bilder.indexOf(req.params[0]);
+    if (index > -1) {
+      docs[0].bilder.splice(index, 1);
+    }
+    console.log("Bild danach: " + docs[0])
+
+    Ausstellung.update(
+      { _id: req.params.id },
+      { bilder: docs[0].bilder },
+      function (err) {
+        if(err) console.log(err)
+          res.redirect('/edit/ausstellung/'+req.params.id);
+      });
+  });
 });
 
 

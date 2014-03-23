@@ -21,6 +21,13 @@ module.exports = function(app, config, User) {
             });
           } else {
             res.locals.authenticated = false;
+
+            // JUST FOR DEBUGGING
+            res.locals.authenticated = true;
+            res.locals.me = 'blaa';
+            // JUST FOR DEBUGGING
+
+
             next();
           }
         });

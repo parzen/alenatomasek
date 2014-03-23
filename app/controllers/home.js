@@ -10,8 +10,8 @@ exports.index = function(req, res) {
 
 exports.malerei = function(req, res) {
   res.render('malerei', {
-  	footerimg: "image/malerei.jpg",
-  	headerimg: "image/malerei_o.jpg",
+  	footerimg: "/image/malerei.jpg",
+  	headerimg: "/image/malerei_o.jpg",
   	bcblock: "#b4b4b4",
   	bcheader: "#808080",
     path: "malerei"
@@ -20,8 +20,8 @@ exports.malerei = function(req, res) {
 
 exports.grafik = function(req, res) {
   res.render('grafik', {
-  	footerimg: "image/grafik.jpg",
-  	headerimg: "image/grafik_o.jpg",
+  	footerimg: "/image/grafik.jpg",
+  	headerimg: "/image/grafik_o.jpg",
   	bcblock: "#bea29a",
   	bcheader: "#905f50",
     path: "grafik"
@@ -30,8 +30,8 @@ exports.grafik = function(req, res) {
 
 exports.keramik = function(req, res) {
   res.render('keramik', {
-  	footerimg: "image/keramik.jpg",
-  	headerimg: "image/keramik_o.jpg",
+  	footerimg: "/image/keramik.jpg",
+  	headerimg: "/image/keramik_o.jpg",
   	bcblock: "#d1dfdd",
   	bcheader: "#a5bdb9",
     path: "keramik"
@@ -40,8 +40,8 @@ exports.keramik = function(req, res) {
 
 exports.biografie = function(req, res) {
   res.render('biografie', {
-  	footerimg: "image/biografie.jpg",
-  	headerimg: "image/biografie_o.jpg",
+  	footerimg: "/image/biografie.jpg",
+  	headerimg: "/image/biografie_o.jpg",
   	bcblock: "#bfcbcd",
   	bcheader: "#9ab7be",
     path: "biografie"
@@ -50,8 +50,8 @@ exports.biografie = function(req, res) {
 
 exports.impressum = function(req, res) {
   res.render('impressum', {
-  	footerimg: "image/impressum.jpg",
-  	headerimg: "image/impressum_o.jpg",
+  	footerimg: "/image/impressum.jpg",
+  	headerimg: "/image/impressum_o.jpg",
   	bcblock: "#cc7e7c",
   	bcheader: "#b8544c",
     path: "impressum"

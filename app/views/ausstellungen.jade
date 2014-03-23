@@ -22,7 +22,15 @@ block content
                       if(ausstellung.beteiligung)
                         span(style='color: #428bca;')
                           i  - Beteiligung
-                div(id=ausstellung._id)(class=i === 0 ? "in" : undefined).panel-collapse.collapse
+                      if (authenticated)
+                        &nbsp; &nbsp;
+                        a(href='edit/ausstellung/'+ausstellung._id, style='color: #d9534f; text-align:right')
+                          strong editieren
+                        &nbsp; &nbsp; 
+                        form(action="/delete/ausstellung/#{ausstellung._id}", method="POST")
+                          input(type="hidden", name="_method", value="DELETE")
+                          button(type='submit') löschen
+                div(id=ausstellung._id)(class=i === 0 ? "panel-collapse collapse in" : "panel-collapse collapse")
                   .panel-body
                     p
                       span.glyphicon.glyphicon-calendar
@@ -35,62 +43,70 @@ block content
                       | #{ausstellung.plzstadt}
                       br
                       a(href='http://'+ausstellung.homepage, target='_blank') #{ausstellung.homepage}
-                    a#modal-kritik.btn.btn-primary.btn-default(href='#modal-container-kritik', role='button', data-toggle='modal')
-                      span.glyphicon.glyphicon-comment
-                      | &nbsp; Kritik
-                    &nbsp; 
-                    a#modal-bilder.btn.btn-primary.btn-default(href='#modal-container-bilder', role='button', data-toggle='modal')
-                      span.glyphicon.glyphicon-picture
-                      | &nbsp; Bilder
-                    #modal-container-bilder.modal.fade(role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
-                      .modal-dialog
-                        .modal-content
-                          .modal-header
-                            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-                            h4#myModalLabel.modal-title
-                              | Bilder
-                          .modal-body
-                            #carousel-574899.carousel.slide
-                              ol.carousel-indicators
-                                li.active(data-slide-to='0', data-target='#carousel-574899')
-                                li(data-slide-to='1', data-target='#carousel-574899')
-                                li(data-slide-to='2', data-target='#carousel-574899')
-                              .carousel-inner
-                                .item.active
-                                  img(alt='', src='http://lorempixel.com/1600/500/sports/1')
-                                  .carousel-caption
-                                    h4
-                                      | First Thumbnail label
-                                    p
-                                      | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                                .item
-                                  img(alt='', src='http://lorempixel.com/1600/500/sports/2')
-                                  .carousel-caption
-                                    h4
-                                      | Second Thumbnail label
-                                    p
-                                      | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                                .item
-                                  img(alt='', src='http://lorempixel.com/1600/500/sports/3')
-                                  .carousel-caption
-                                    h4
-                                      | Third Thumbnail label
-                                    p
-                                      | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                              a.left.carousel-control(href='#carousel-574899', data-slide='prev')
-                                span.glyphicon.glyphicon-chevron-left
-                              a.right.carousel-control(href='#carousel-574899', data-slide='next')
-                                span.glyphicon.glyphicon-chevron-right
-                          .modal-footer
-                            button.btn.btn-default(type='button', data-dismiss='modal') Close
-                            button.btn.btn-primary(type='button') Save changes
+
+                    if(ausstellung.kritik)
+                      a#modal-kritik.btn.btn-primary.btn-default(href='#modal-container-kritik'+i, role='button', data-toggle='modal')
+                        span.glyphicon.glyphicon-comment
+                        | &nbsp; Kritik
+                      div(id='modal-container-kritik'+i).modal.fade(role='dialog', aria-labelledby='Kritik'+i, aria-hidden='true')
+                        .modal-dialog
+                          .modal-content
+                            .modal-header
+                              button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                              h4(id='Kritik'+i).modal-title
+                                | Kritik
+                            .modal-body
+                              div(id='carousel-'+i).carousel.slide
+                                ol.carousel-indicators
+                                  each kritik, j in ausstellung.kritik
+                                    li(class=j === 0 ? "active" : undefined)(data-slide-to=j, data-target='#carousel-'+i)
+                                .carousel-inner
+                                  each kritik, j in ausstellung.kritik
+                                    .item(class=j === 0 ? "active" : undefined)
+                                      img(alt='', src=kritik)
+                                      .carousel-caption
+                                a.left.carousel-control(href='#carousel-'+i, data-slide='prev')
+                                  span.glyphicon.glyphicon-chevron-left
+                                a.right.carousel-control(href='#carousel-'+i, data-slide='next')
+                                  span.glyphicon.glyphicon-chevron-right
+                            .modal-footer
+                              button.btn.btn-default(type='button', data-dismiss='modal') Schließen
+
+                    if(ausstellung.bilder)
+                      &nbsp; 
+                      a#modal-bilder.btn.btn-primary.btn-default(href='#modal-container-bilder'+i, role='button', data-toggle='modal')
+                        span.glyphicon.glyphicon-picture
+                        | &nbsp; Bilder
+                      div(id='modal-container-bilder'+i).modal.fade(role='dialog', aria-labelledby='Bilder'+i, aria-hidden='true')
+                        .modal-dialog
+                          .modal-content
+                            .modal-header
+                              button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                              h4(id='Bilder'+i).modal-title
+                                | Bilder
+                            .modal-body
+                              div(id='carousel-'+i).carousel.slide
+                                ol.carousel-indicators
+                                  each bild, j in ausstellung.bilder
+                                    li(class=j === 0 ? "active" : undefined)(data-slide-to=j, data-target='#carousel-'+i)
+                                .carousel-inner
+                                  each bild, j in ausstellung.bilder
+                                    .item(class=j === 0 ? "active" : undefined)
+                                      img(alt='', src=bild)
+                                      .carousel-caption
+                                a.left.carousel-control(href='#carousel-'+i, data-slide='prev')
+                                  span.glyphicon.glyphicon-chevron-left
+                                a.right.carousel-control(href='#carousel-'+i, data-slide='next')
+                                  span.glyphicon.glyphicon-chevron-right
+                            .modal-footer
+                              button.btn.btn-default(type='button', data-dismiss='modal') Schließen
 
         if (authenticated)
           hr(style="border-style: dashed")
           if (errortext)
             p(style="color: #d9534f")
               strong #{errortext}
-          form(role='form', action="/ausstellungen", method="POST")
+          form(role='form', action="/ausstellungen", method="POST", enctype="multipart/form-data")
             .form-group
               label Ausstellungstitel
               input.form-control(name="ausstellung[titel]", type='text', value=inputs.titel === undefined ? "" : inputs.titel)
@@ -112,9 +128,13 @@ block content
             .form-group
               label Kritik
               input#exampleInputFile(name="ausstellung[kritik]", type='file', value=inputs.kritik === undefined ? "" : inputs.kritik)
+              p.help-block
+                | Weitere Kritiken können unter 'editieren' hinzugefügt werden!
             .form-group
               label Bilder
               input#exampleInputFile(name="ausstellung[bilder]", type='file', value=inputs.bilder === undefined ? "" : inputs.bilder)
+              p.help-block
+                | Weitere Bilder können unter 'editieren' hinzugefügt werden!
             .checkbox
               label Beteiligung
                 input(name="ausstellung[beteiligung]", type='checkbox', value=inputs.beteiligung === undefined ? "" : inputs.beteiligung)
