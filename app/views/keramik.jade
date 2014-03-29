@@ -9,4 +9,29 @@ block content
       .col-md-4.column
         include navbar
       .col-md-8.column(align="center",style="background-color: #{bcblock}; min-height:450px;")
-        p kerami
+        p 
+        if(items)
+          if(items.length > 0)
+            div(id='carousel-').carousel.slide
+              ol.carousel-indicators
+                each item, j in items
+                  li(class=j === 0 ? "active" : undefined)(data-slide-to=j, data-target='#carousel-')
+              .carousel-inner
+                each item, j in items
+                  .item(class=j === 0 ? "active" : undefined)
+                    img(alt='', src=item.bild)
+                    .carousel-caption
+                      h4
+                        | #{item.name}
+                      p
+                        | #{item.beschreibung}
+                      if (authenticated)
+                        a(href='/edit/bild/keramik/'+item._id, style='color: #d9534f; text-align:right')
+                          strong editieren
+              a.left.carousel-control(href='#carousel-', data-slide='prev')
+                span.glyphicon.glyphicon-chevron-left
+              a.right.carousel-control(href='#carousel-', data-slide='next')
+                span.glyphicon.glyphicon-chevron-right
+
+        if (authenticated)
+          a.btn.btn-default(href='/add/bild/keramik') neues Bild

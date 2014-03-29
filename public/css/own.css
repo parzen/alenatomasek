@@ -1,7 +1,10 @@
-.carousel-caption { position: relative; } 
+.carousel-caption {
+      text-align:center;
+}
+
 .container{
     max-width:800px;
-    margin:0 auto;/*make it centered*/
+    margin:0 auto;
 }
 
 h1.logo {

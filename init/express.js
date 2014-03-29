@@ -23,8 +23,8 @@ module.exports = function(app, config, User) {
             res.locals.authenticated = false;
 
             // JUST FOR DEBUGGING
-            res.locals.authenticated = true;
-            res.locals.me = 'blaa';
+            //res.locals.authenticated = true;
+            //res.locals.me = 'blaa';
             // JUST FOR DEBUGGING
 
 

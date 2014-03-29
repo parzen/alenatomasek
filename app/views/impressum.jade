@@ -10,26 +10,66 @@ block content
         include navbar
       .col-md-8.column(align="center",style="background-color: #{bcblock}; min-height:450px;")
         p
-        .col-md-4.column
-          img(class="img-responsive",src="image/portrait.jpg")
-        .col-md-8.column
-          p
-          address(align="left")
-            strong alena tomasek
-            br
-            | marktäckerstr. 66
-            br
-            | 90427 nürnberg
-            br
-            abbr(title='Telefon') Tel: 
-            | 0911 / 31 37 11
-            br
-            a(href='mailto:email@alena-tomasek.de') email@alena-tomasek.de
-        br
-        p öffnungszeiten mittwoch und donnerstag 10.00 – 18.00 uhr
-        p
-        img(class="img-responsive",src="image/Anfahrt.jpg")
-        p
+          table(width='520', border='0')
+            tr
+                td(width='125')
+                  p(align='left')
+                    img(src='image/portrait.jpg', width='125', height='141')
+                td(width='15')  
+                td
+                  div(align='left')
+                    span
+                      strong alena tomasek
+                      br
+                      | marktäckerstr. 66
+                      br
+                      | 90427 nürnberg
+              tr
+                td(height='23', colspan='2')
+                  div(align='left')
+                td(width='394')
+                  div(align='left')
+              tr
+                td
+                  div(align='left')
+                    span telefon
+                td(colspan='2')
+                  div(align='left')
+                    strong
+                      span 0911 / 31 37 11
+              tr
+                td
+                  div(align='left')
+                    span fax
+                td(colspan='2')
+                  div(align='left')
+                    strong
+                      span 0911 / 810 69 69
+              tr
+                td
+                  div(align='left')
+                    span mail
+                td(colspan='2')
+                  div(align='left')
+                    strong
+                      span
+                        a(href='mailto:email@alena-tomasek.de') email@alena-tomasek.de
+              tr
+                td
+                  div(align='left')
+                    span öffnungszeiten
+                td(colspan='2')
+                  div(align='left')
+                    strong
+                      span mittwoch und donnerstag 10.00 – 18.00 uhr 
+              tr
+                td(height='22', colspan='2')
+                  div(align='left')
+                td
+                  div(align='left')
+
+          div(align='center')
+            img(src="image/Anfahrt.jpg", width='100%')
 
 
 

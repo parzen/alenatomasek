@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  .container.col-md-12.column(style="background-color: #C0C0C0")
+    .row.clearfix
+      .col-md-12.column
+        div(style="height: 25px")
+    .row.clearfix
+      .col-md-4.column
+        include navbar
+      .col-md-8.column(style="background-color: #{bcblock}; min-height:450px;")
+        p
+          p(style="color: #d9534f")
+            strong Neues Bild für #{picFor}
+        if (authenticated)
+          hr(style="border-style: dashed")
+          if (errortext)
+            p(style="color: #d9534f")
+              strong #{errortext}
+          form(role='form', action="/newPic/#{picFor}", method="POST", enctype="multipart/form-data")
+            .form-group
+              label Name des Bildes
+              input.form-control(name="data[name]", type='text', value=inputsNB.name === undefined ? "" : inputsNB.name)
+            .form-group
+              label Beschreibung
+              input.form-control(name="data[beschreibung]", type='text', value=inputsNB.beschreibung === undefined ? "" : inputsNB.beschreibung)
+              p.help-block
+                | z.B.: Öl auf Leinwand | 100x100cm | 2006
+            .form-group
+              label Bild
+              input#exampleInputFile(name="data[bild]", type='file', value=inputsNB.bild === undefined ? "" : inputsNB.bild)
+            button.btn.btn-default(type='submit') Submit

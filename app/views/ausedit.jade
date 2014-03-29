@@ -1,0 +1,103 @@
+extends layout
+
+block content
+  .container.col-md-12.column(style="background-color: #C0C0C0")
+    .row.clearfix
+      .col-md-12.column
+        div(style="height: 25px")
+    .row.clearfix
+      .col-md-4.column
+        include navbar
+      .col-md-8.column(style="background-color: #{bcblock}; min-height:450px;")
+        p
+          p(style="color: #d9534f")
+            strong Ausstellung editieren
+          p
+          form(action="/delete/ausstellung/#{inputs._id}", method="POST")
+            input(type="hidden", name="_method", value="DELETE")
+            button(type='submit') Ausstellung löschen
+        if (authenticated)
+          hr(style="border-style: dashed")
+          form(role='form', action="/update/ausstellung/#{inputs._id}", method="POST")
+            input(type="hidden", name="_method", value="PUT")
+            .form-group
+              label Ausstellungstitel
+              input.form-control(name="ausstellung[titel]", type='text', value=inputs.titel)
+            .form-group
+              label Straße
+              input.form-control(name="ausstellung[strasse]", type='text', value=inputs.strasse)
+            .form-group
+              label PLZ und Stadt
+              input.form-control(name="ausstellung[plzstadt]", type='text', value=inputs.plzstadt)
+            .form-group
+              label Homepage
+              input.form-control(name="ausstellung[homepage]", type='text', value=inputs.homepage)
+            .form-group
+              label Von
+              input.form-control(name="ausstellung[datumVon]", type='text', value=inputs.datumVon)
+            .form-group
+              label Bis
+              input.form-control(name="ausstellung[datumBis]", type='text', value=inputs.datumBis)
+            .checkbox
+              label Beteiligung
+                input(name="ausstellung[beteiligung]", type='checkbox', value=inputs.beteiligung)
+            button.btn.btn-default(type='submit') Update
+
+          hr(style="border-style: dashed")
+          p 
+            strong Kritiken 
+            a#modal-156914.btn.btn-default(href='#modal-container-newKritik', role='button', data-toggle='modal') + Kritik hinzufügen
+            #modal-container-newKritik.modal.fade(role='dialog', aria-labelledby='newKritikLabel', aria-hidden='true')
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                    h4#newKritikLabel.modal-title
+                      | Neue Kritik hinzufügen
+                  .modal-body
+                    form(role='form', action="/new/kritik/ausstellung/#{inputs._id}", method="POST", enctype="multipart/form-data")
+                      input(type="hidden", name="_method", value="PUT", enctype="multipart/form-data")
+                      .form-group
+                       label Kritik
+                       input#exampleInputFile(name="neueKritik", type='file')
+                      button.btn.btn-default(type='submit') Kritik hinzufügen
+                  .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal') Abbrechen
+          p
+            if(inputs.kritik)
+              each kritik, j in inputs.kritik
+                p
+                  img(style="max-width:300px;", src=kritik)
+                  form(action="/delete/kritik/ausstellung/#{inputs._id}/#{kritik}", method="POST")
+                    input(type="hidden", name="_method", value="DELETE")
+                    button(type='submit') Kritik löschen
+
+          hr(style="border-style: dashed")
+          p 
+            strong Bilder 
+            a#modal-156915.btn.btn-default(href='#modal-container-newBild', role='button', data-toggle='modal') + Bild hinzufügen
+            #modal-container-newBild.modal.fade(role='dialog', aria-labelledby='newBildLabel', aria-hidden='true')
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                    h4#newBildLabel.modal-title
+                      | Neues Bild hinzufügen
+                  .modal-body
+                    form(role='form', action="/new/bild/ausstellung/#{inputs._id}", method="POST", enctype="multipart/form-data")
+                      input(type="hidden", name="_method", value="PUT", enctype="multipart/form-data")
+                      .form-group
+                       label Bild
+                       input#exampleInputFile(name="neuesBild", type='file')
+                      button.btn.btn-default(type='submit') Bild hinzufügen
+                  .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal') Abbrechen
+          p
+            if(inputs.bilder)
+              each bild, j in inputs.bilder
+                p
+                  img(style="max-width:300px;", src=bild)
+                  form(action="/delete/bild/ausstellung/#{inputs._id}/#{bild}", method="POST")
+                    input(type="hidden", name="_method", value="DELETE")
+                    button(type='submit') Bild löschen
+            

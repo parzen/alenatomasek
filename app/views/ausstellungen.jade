@@ -26,10 +26,6 @@ block content
                         &nbsp; &nbsp;
                         a(href='edit/ausstellung/'+ausstellung._id, style='color: #d9534f; text-align:right')
                           strong editieren
-                        &nbsp; &nbsp; 
-                        form(action="/delete/ausstellung/#{ausstellung._id}", method="POST")
-                          input(type="hidden", name="_method", value="DELETE")
-                          button(type='submit') löschen
                 div(id=ausstellung._id)(class=i === 0 ? "panel-collapse collapse in" : "panel-collapse collapse")
                   .panel-body
                     p
