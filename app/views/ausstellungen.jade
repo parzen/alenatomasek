@@ -41,61 +41,63 @@ block content
                       a(href='http://'+ausstellung.homepage, target='_blank') #{ausstellung.homepage}
 
                     if(ausstellung.kritik)
-                      a#modal-kritik.btn.btn-primary.btn-default(href='#modal-container-kritik'+i, role='button', data-toggle='modal')
-                        span.glyphicon.glyphicon-comment
-                        | &nbsp; Kritik
-                      div(id='modal-container-kritik'+i).modal.fade(role='dialog', aria-labelledby='Kritik'+i, aria-hidden='true')
-                        .modal-dialog
-                          .modal-content
-                            .modal-header
-                              button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-                              h4(id='Kritik'+i).modal-title
-                                | Kritik
-                            .modal-body
-                              div(id='carousel-'+i).carousel.slide
-                                ol.carousel-indicators
-                                  each kritik, j in ausstellung.kritik
-                                    li(class=j === 0 ? "active" : undefined)(data-slide-to=j, data-target='#carousel-'+i)
-                                .carousel-inner
-                                  each kritik, j in ausstellung.kritik
-                                    .item(class=j === 0 ? "active" : undefined)
-                                      img(alt='', src=kritik)
-                                      .carousel-caption
-                                a.left.carousel-control(href='#carousel-'+i, data-slide='prev')
-                                  span.glyphicon.glyphicon-chevron-left
-                                a.right.carousel-control(href='#carousel-'+i, data-slide='next')
-                                  span.glyphicon.glyphicon-chevron-right
-                            .modal-footer
-                              button.btn.btn-default(type='button', data-dismiss='modal') Schließen
+                      if(ausstellung.kritik.length > 0)
+                        a#modal-kritik.btn.btn-primary.btn-default(href='#modal-container-kritik'+i, role='button', data-toggle='modal')
+                          span.glyphicon.glyphicon-comment
+                          | &nbsp; Kritik
+                        &nbsp;
+                        div(id='modal-container-kritik'+i).modal.fade(role='dialog', aria-labelledby='Kritik'+i, aria-hidden='true')
+                          .modal-dialog
+                            .modal-content
+                              .modal-header
+                                button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                                h4(id='Kritik'+i).modal-title
+                                  | Kritik
+                              .modal-body
+                                div(id='carousel-'+i).carousel.slide
+                                  ol.carousel-indicators
+                                    each kritik, j in ausstellung.kritik
+                                      li(class=j === 0 ? "active" : undefined)(data-slide-to=j, data-target='#carousel-'+i)
+                                  .carousel-inner
+                                    each kritik, j in ausstellung.kritik
+                                      .item(class=j === 0 ? "active" : undefined)
+                                        img(alt='', src=kritik)
+                                        .carousel-caption
+                                  a.left.carousel-control(href='#carousel-'+i, data-slide='prev')
+                                    span.glyphicon.glyphicon-chevron-left
+                                  a.right.carousel-control(href='#carousel-'+i, data-slide='next')
+                                    span.glyphicon.glyphicon-chevron-right
+                              .modal-footer
+                                button.btn.btn-default(type='button', data-dismiss='modal') Schließen
 
                     if(ausstellung.bilder)
-                      &nbsp; 
-                      a#modal-bilder.btn.btn-primary.btn-default(href='#modal-container-bilder'+i, role='button', data-toggle='modal')
-                        span.glyphicon.glyphicon-picture
-                        | &nbsp; Bilder
-                      div(id='modal-container-bilder'+i).modal.fade(role='dialog', aria-labelledby='Bilder'+i, aria-hidden='true')
-                        .modal-dialog
-                          .modal-content
-                            .modal-header
-                              button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
-                              h4(id='Bilder'+i).modal-title
-                                | Bilder
-                            .modal-body
-                              div(id='carousel-'+i).carousel.slide
-                                ol.carousel-indicators
-                                  each bild, j in ausstellung.bilder
-                                    li(class=j === 0 ? "active" : undefined)(data-slide-to=j, data-target='#carousel-'+i)
-                                .carousel-inner
-                                  each bild, j in ausstellung.bilder
-                                    .item(class=j === 0 ? "active" : undefined)
-                                      img(alt='', src=bild)
-                                      .carousel-caption
-                                a.left.carousel-control(href='#carousel-'+i, data-slide='prev')
-                                  span.glyphicon.glyphicon-chevron-left
-                                a.right.carousel-control(href='#carousel-'+i, data-slide='next')
-                                  span.glyphicon.glyphicon-chevron-right
-                            .modal-footer
-                              button.btn.btn-default(type='button', data-dismiss='modal') Schließen
+                      if(ausstellung.bilder.length > 0)
+                        a#modal-bilder.btn.btn-primary.btn-default(href='#modal-container-bilder'+i, role='button', data-toggle='modal')
+                          span.glyphicon.glyphicon-picture
+                          | &nbsp; Bilder
+                        div(id='modal-container-bilder'+i).modal.fade(role='dialog', aria-labelledby='Bilder'+i, aria-hidden='true')
+                          .modal-dialog
+                            .modal-content
+                              .modal-header
+                                button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                                h4(id='Bilder'+i).modal-title
+                                  | Bilder
+                              .modal-body
+                                div(id='carousel-'+i).carousel.slide
+                                  ol.carousel-indicators
+                                    each bild, j in ausstellung.bilder
+                                      li(class=j === 0 ? "active" : undefined)(data-slide-to=j, data-target='#carousel-'+i)
+                                  .carousel-inner
+                                    each bild, j in ausstellung.bilder
+                                      .item(class=j === 0 ? "active" : undefined)
+                                        img(alt='', src=bild)
+                                        .carousel-caption
+                                  a.left.carousel-control(href='#carousel-'+i, data-slide='prev')
+                                    span.glyphicon.glyphicon-chevron-left
+                                  a.right.carousel-control(href='#carousel-'+i, data-slide='next')
+                                    span.glyphicon.glyphicon-chevron-right
+                              .modal-footer
+                                button.btn.btn-default(type='button', data-dismiss='modal') Schließen
         p
 
         if (authenticated)
@@ -134,5 +136,5 @@ block content
                 | Weitere Bilder können unter 'editieren' hinzugefügt werden!
             .checkbox
               label Beteiligung
-                input(name="ausstellung[beteiligung]", type='checkbox', value=inputs.beteiligung === undefined ? "" : inputs.beteiligung)
+                input(name="ausstellung[beteiligung]", type='checkbox')
             button.btn.btn-default(type='submit') Submit

@@ -295,12 +295,12 @@ app.post('/newPic/:picFor', function (req, res, next) {
 
   // Read Bild
   fs.readFile(bild.path, function (err, data) {
-    var newPath = __dirname + "/public/uploads/"+bild.name;
+    var newPath = __dirname + "/public/uploads/"+picFor+"/"+bild.name;
     console.log("newPath: " + newPath);
     fs.writeFile(newPath, data, function (err) {
       if (err) throw err;
 
-      newPic.bild = "/uploads/"+bild.name; 
+      newPic.bild = "/uploads/"+picFor+"/"+bild.name; 
 
       // Write to Database
       console.log("Write New Pic in db:")
@@ -365,24 +365,24 @@ app.post('/ausstellungen', function (req, res, next) {
 
       // Read Kritik
       fs.readFile(req.files.ausstellung.kritik.path, function (err, data) {
-        var newPath = __dirname + "/public/uploads/"+req.files.ausstellung.kritik.name;
+        var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.ausstellung.kritik.name;
         console.log("newPath: " + newPath);
         fs.writeFile(newPath, data, function (err) {
           if (req.files.ausstellung.kritik.name != '' && err) throw err;
 
           if (req.files.ausstellung.kritik.name != '') {
-            aus.kritik.push("/uploads/"+req.files.ausstellung.kritik.name);
+            aus.kritik.push("/uploads/ausstellung/"+req.files.ausstellung.kritik.name);
           }
 
           // Read Bild
           fs.readFile(req.files.ausstellung.bilder.path, function (err, data) {
-            var newPath = __dirname + "/public/uploads/"+req.files.ausstellung.bilder.name;
+            var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.ausstellung.bilder.name;
             console.log("newPath: " + newPath);
             fs.writeFile(newPath, data, function (err) {
               if (req.files.ausstellung.bilder.name != '' && err) throw err;
 
               if (req.files.ausstellung.bilder.name != '') {
-                aus.bilder.push("/uploads/"+req.files.ausstellung.bilder.name); 
+                aus.bilder.push("/uploads/ausstellung/"+req.files.ausstellung.bilder.name); 
               }
 
               // Write to Database
@@ -531,13 +531,13 @@ app.put("/new/kritik/ausstellung/:id", function(req,res) {
     console.log(docs[0])
     
     fs.readFile(req.files.neueKritik.path, function (err, data) {
-      var newPath = __dirname + "/public/uploads/"+req.files.neueKritik.name;
+      var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.neueKritik.name;
       console.log("newPath: " + newPath);
       fs.writeFile(newPath, data, function (err) {
         if (req.files.neueKritik.name != '' && err) throw err;
 
         if (req.files.neueKritik.name != '') {
-          docs[0].kritik.push("/uploads/"+req.files.neueKritik.name);
+          docs[0].kritik.push("/uploads/ausstellung/"+req.files.neueKritik.name);
         }
 
         console.log("Neue Kritik:")
@@ -560,13 +560,13 @@ app.put("/new/bild/ausstellung/:id", function(req,res) {
     console.log(docs[0])
     
     fs.readFile(req.files.neuesBild.path, function (err, data) {
-      var newPath = __dirname + "/public/uploads/"+req.files.neuesBild.name;
+      var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.neuesBild.name;
       console.log("newPath: " + newPath);
       fs.writeFile(newPath, data, function (err) {
         if (req.files.neuesBild.name != '' && err) throw err;
 
         if (req.files.neuesBild.name != '') {
-          docs[0].bilder.push("/uploads/"+req.files.neuesBild.name);
+          docs[0].bilder.push("/uploads/ausstellung/"+req.files.neuesBild.name);
         }
 
         console.log("Neues Bild:")
