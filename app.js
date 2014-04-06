@@ -9,6 +9,18 @@ var helper    = require('./app/controllers/helper');
 var fs        = require('fs');
 var ipPort    = "http://" + ipaddress + ":" + port;
 
+// default to a 'localhost' configuration:
+var connection_string = 'localhost'+'/alenatomasek';
+// if OPENSHIFT env variables are present, use the available connection info:
+if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+  connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+  process.env.OPENSHIFT_APP_NAME;
+}
+console.log("connection_string: " + connection_string)
+
 /**
 * Define model.
 */
@@ -104,10 +116,10 @@ var Ausstellung = mongoose.model('Ausstellung', new Schema({
 /**
 * Database connect
 */
-mongoose.connect(config.db);
+mongoose.connect('mongodb://'+connection_string);
 var db = mongoose.connection;
 db.on('error', function() {
-  throw new Error('unable to connect to database at ' + config.db);
+  throw new Error('unable to connect to database at ' + 'mongodb://'+connection_string);
 });
 
 /**
