@@ -38,6 +38,16 @@ exports.keramik = function(req, res) {
   });
 };
 
+exports.kurse = function(req, res) {
+  res.render('kurse', {
+    footerimg: "/image/kurse.jpg",
+    headerimg: "/image/kurse_o.jpg",
+    bcblock: "#d1dfdd",
+    bcheader: "#a5bdb9",
+    path: "kurse"
+  });
+};
+
 exports.biografie = function(req, res) {
   res.render('biografie', {
   	footerimg: "/image/biografie.jpg",
