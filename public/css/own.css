@@ -25,3 +25,7 @@ p.bla{
 	font-size: 12px; 
 	color: #555555;
 }
+
+.borderless td {
+    border: none;
+}
