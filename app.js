@@ -140,7 +140,7 @@ require('./init/routes')(app);
 * Login route
 */
 app.get('/login', function (req, res) {
-  res.render('login', { signupEmail: '' });
+  res.render('login', { signupEmail: '', serverUploads: serverUploads });
 });
 
 app.get('/login/:signupEmail', function (req, res) {
