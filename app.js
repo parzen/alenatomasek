@@ -19,7 +19,7 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
   process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
   process.env.OPENSHIFT_APP_NAME;
-  serverUploads = process.env.OPENSHIFT_DATA_DIR+'/serverUploads';
+  serverUploads = process.env.OPENSHIFT_DATA_DIR;
 }
 console.log("connection_string: " + connection_string);
 console.log("serverUploads: "+serverUploads);
