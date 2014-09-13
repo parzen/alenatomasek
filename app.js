@@ -305,7 +305,8 @@ app.post('/newPic/:picFor', function (req, res, next) {
       if (err) throw err;
 
       //newPic.bild = "/uploads/"+picFor+"/"+bild.name; 
-      newPic.bild = serverUploads + "/"+picFor+"/"+bild.name; 
+      //newPic.bild = serverUploads + "/"+picFor+"/"+bild.name; 
+      newPic.bild = "/"+picFor+"/"+bild.name; 
 
       // Write to Database
       console.log("Write New Pic in db:")
@@ -378,7 +379,8 @@ app.post('/ausstellungen', function (req, res, next) {
 
           if (req.files.ausstellung.kritik.name != '') {
             //aus.kritik.push("/uploads/ausstellung/"+req.files.ausstellung.kritik.name);
-            aus.kritik.push(serverUploads + "/ausstellung/"+req.files.ausstellung.kritik.name);
+            //aus.kritik.push(serverUploads + "/ausstellung/"+req.files.ausstellung.kritik.name);
+            aus.kritik.push("/ausstellung/"+req.files.ausstellung.kritik.name);
           }
 
           // Read Bild
@@ -391,7 +393,8 @@ app.post('/ausstellungen', function (req, res, next) {
 
               if (req.files.ausstellung.bilder.name != '') {
                 //aus.bilder.push("/uploads/ausstellung/"+req.files.ausstellung.bilder.name); 
-                aus.bilder.push(serverUploads + "/ausstellung/"+req.files.ausstellung.bilder.name); 
+                //aus.bilder.push(serverUploads + "/ausstellung/"+req.files.ausstellung.bilder.name); 
+                aus.bilder.push("/ausstellung/"+req.files.ausstellung.bilder.name); 
               }
 
               // Write to Database
@@ -549,7 +552,8 @@ app.put("/new/kritik/ausstellung/:id", function(req,res) {
 
         if (req.files.neueKritik.name != '') {
           //docs[0].kritik.push("/uploads/ausstellung/"+req.files.neueKritik.name);
-          docs[0].kritik.push(serverUploads + "/ausstellung/"+req.files.neueKritik.name);
+          //docs[0].kritik.push(serverUploads + "/ausstellung/"+req.files.neueKritik.name);
+          docs[0].kritik.push("/ausstellung/"+req.files.neueKritik.name);
         }
 
         console.log("Neue Kritik:")
@@ -580,7 +584,8 @@ app.put("/new/bild/ausstellung/:id", function(req,res) {
 
         if (req.files.neuesBild.name != '') {
           //docs[0].bilder.push("/uploads/ausstellung/"+req.files.neuesBild.name);
-          docs[0].bilder.push(serverUploads + "/ausstellung/"+req.files.neuesBild.name);
+          //docs[0].bilder.push(serverUploads + "/ausstellung/"+req.files.neuesBild.name);
+          docs[0].bilder.push("/ausstellung/"+req.files.neuesBild.name);
         }
 
         console.log("Neues Bild:")
