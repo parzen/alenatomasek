@@ -277,30 +277,32 @@ app.post('/newPic/:picFor', function (req, res, next) {
   switch(picFor)
   {
     case 'keramik':
-      console.log("Das ist defenitiv keramik");
-      newPic = new Keramik(b);
+    console.log("Das ist defenitiv keramik");
+    newPic = new Keramik(b);
     break;
     case 'grafik':
-      console.log("Das ist defenitiv grafik");
-      newPic = new Grafik(b);
+    console.log("Das ist defenitiv grafik");
+    newPic = new Grafik(b);
     break;
     case 'malerei':
-      console.log("Das ist defenitiv malerei");
-      newPic = new Malerei(b);
+    console.log("Das ist defenitiv malerei");
+    newPic = new Malerei(b);
     break;
     default:
-      console.log("ungültiges picFor!");
-      res.redirect('/');
+    console.log("ungültiges picFor!");
+    res.redirect('/');
   }
 
   // Read Bild
   fs.readFile(bild.path, function (err, data) {
-    var newPath = __dirname + "/public/uploads/"+picFor+"/"+bild.name;
+    //var newPath = __dirname + "/public/uploads/"+picFor+"/"+bild.name;
+    var newPath = "/serverUploads/"+picFor+"/"+bild.name;
     console.log("newPath: " + newPath);
     fs.writeFile(newPath, data, function (err) {
       if (err) throw err;
 
-      newPic.bild = "/uploads/"+picFor+"/"+bild.name; 
+      //newPic.bild = "/uploads/"+picFor+"/"+bild.name; 
+      newPic.bild = "/serverUploads/"+picFor+"/"+bild.name; 
 
       // Write to Database
       console.log("Write New Pic in db:")
@@ -365,24 +367,28 @@ app.post('/ausstellungen', function (req, res, next) {
 
       // Read Kritik
       fs.readFile(req.files.ausstellung.kritik.path, function (err, data) {
-        var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.ausstellung.kritik.name;
+        //var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.ausstellung.kritik.name;
+        var newPath = "/serverUploads/ausstellung/"+req.files.ausstellung.kritik.name;
         console.log("newPath: " + newPath);
         fs.writeFile(newPath, data, function (err) {
           if (req.files.ausstellung.kritik.name != '' && err) throw err;
 
           if (req.files.ausstellung.kritik.name != '') {
-            aus.kritik.push("/uploads/ausstellung/"+req.files.ausstellung.kritik.name);
+            //aus.kritik.push("/uploads/ausstellung/"+req.files.ausstellung.kritik.name);
+            aus.kritik.push("/serverUploads/ausstellung/"+req.files.ausstellung.kritik.name);
           }
 
           // Read Bild
           fs.readFile(req.files.ausstellung.bilder.path, function (err, data) {
-            var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.ausstellung.bilder.name;
+            //var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.ausstellung.bilder.name;
+            var newPath = "/serverUploads/ausstellung/"+req.files.ausstellung.bilder.name;
             console.log("newPath: " + newPath);
             fs.writeFile(newPath, data, function (err) {
               if (req.files.ausstellung.bilder.name != '' && err) throw err;
 
               if (req.files.ausstellung.bilder.name != '') {
-                aus.bilder.push("/uploads/ausstellung/"+req.files.ausstellung.bilder.name); 
+                //aus.bilder.push("/uploads/ausstellung/"+req.files.ausstellung.bilder.name); 
+                aus.bilder.push("/serverUploads/ausstellung/"+req.files.ausstellung.bilder.name); 
               }
 
               // Write to Database
@@ -395,9 +401,9 @@ app.post('/ausstellungen', function (req, res, next) {
             });
           });
         });
-      });
-    }
-  });
+});
+}
+});
 });
 
 /**
@@ -407,12 +413,12 @@ app.get("/edit/ausstellung/:id" , function(req,res) {
   Ausstellung.find({ _id: req.params.id }, function (err, docs) {
     console.log(docs[0])
     res.render("ausedit", { 
-        footerimg: "/image/ausstellungen.jpg",
-        headerimg: "/image/ausstellungen_o.jpg",
-        bcblock: "#bfc6b0",
-        bcheader: "#9fa97b",
-        path: "ausstellungen",
-        inputs: docs[0]});
+      footerimg: "/image/ausstellungen.jpg",
+      headerimg: "/image/ausstellungen_o.jpg",
+      bcblock: "#bfc6b0",
+      bcheader: "#9fa97b",
+      path: "ausstellungen",
+      inputs: docs[0]});
   });
 });
 app.get("/edit/bild/:picFor/:id" , function(req,res) {
@@ -421,35 +427,35 @@ app.get("/edit/bild/:picFor/:id" , function(req,res) {
   switch(picFor)
   {
     case 'keramik':
-      console.log("Das ist defenitiv keramik");
-      Keramik.find({ _id: req.params.id }, function (err, docs) {
-        console.log(docs[0])
-        res.render('editBild', {
-         picFor: picFor,
-         inputs: docs[0]});
-      });
+    console.log("Das ist defenitiv keramik");
+    Keramik.find({ _id: req.params.id }, function (err, docs) {
+      console.log(docs[0])
+      res.render('editBild', {
+       picFor: picFor,
+       inputs: docs[0]});
+    });
     break;
     case 'grafik':
-      console.log("Das ist defenitiv grafik");
-      Grafik.find({ _id: req.params.id }, function (err, docs) {
-        console.log(docs[0])
-        res.render('editBild', {
-         picFor: picFor,
-         inputs: docs[0]});
-      });
+    console.log("Das ist defenitiv grafik");
+    Grafik.find({ _id: req.params.id }, function (err, docs) {
+      console.log(docs[0])
+      res.render('editBild', {
+       picFor: picFor,
+       inputs: docs[0]});
+    });
     break;
     case 'malerei':
-      console.log("Das ist defenitiv malerei");
-      Malerei.find({ _id: req.params.id }, function (err, docs) {
-        console.log(docs[0])
-        res.render('editBild', {
-         picFor: picFor,
-         inputs: docs[0]});
-      });
+    console.log("Das ist defenitiv malerei");
+    Malerei.find({ _id: req.params.id }, function (err, docs) {
+      console.log(docs[0])
+      res.render('editBild', {
+       picFor: picFor,
+       inputs: docs[0]});
+    });
     break;
     default:
-      console.log("ungültiges picFor!");
-      res.redirect('/');
+    console.log("ungültiges picFor!");
+    res.redirect('/');
   }
 });
 
@@ -472,11 +478,11 @@ app.put("/update/ausstellung/:id", function(req,res) {
       beteiligung: b.beteiligung
       //,kritik: b.kritik,
       //bilder: b.bilder
-      },
+    },
     function (err) {
       if(err) console.log(err)
-      res.redirect('/ausstellungen');
-  });
+        res.redirect('/ausstellungen');
+    });
 });
 app.put("/update/bild/:picFor/:id", function(req,res) {
   var b = req.body.data;
@@ -487,41 +493,41 @@ app.put("/update/bild/:picFor/:id", function(req,res) {
   switch(picFor)
   {
     case 'keramik':
-      console.log("Das ist defenitiv keramik");
-      Keramik.update({ _id: req.params.id },
-        { name: b.name,
-          beschreibung: b.beschreibung
-        },
-        function (err) {
-          if(err) console.log(err)
-            res.redirect('/'+picFor);
-        });
+    console.log("Das ist defenitiv keramik");
+    Keramik.update({ _id: req.params.id },
+      { name: b.name,
+        beschreibung: b.beschreibung
+      },
+      function (err) {
+        if(err) console.log(err)
+          res.redirect('/'+picFor);
+      });
     break;
     case 'grafik':
-      console.log("Das ist defenitiv grafik");
-      Grafik.update({ _id: req.params.id },
-        { name: b.name,
-          beschreibung: b.beschreibung
-        },
-        function (err) {
-          if(err) console.log(err)
-            res.redirect('/'+picFor);
-        });
+    console.log("Das ist defenitiv grafik");
+    Grafik.update({ _id: req.params.id },
+      { name: b.name,
+        beschreibung: b.beschreibung
+      },
+      function (err) {
+        if(err) console.log(err)
+          res.redirect('/'+picFor);
+      });
     break;
     case 'malerei':
-      console.log("Das ist defenitiv malerei");
-      Malerei.update({ _id: req.params.id },
-        { name: b.name,
-          beschreibung: b.beschreibung
-        },
-        function (err) {
-          if(err) console.log(err)
-            res.redirect('/'+picFor);
-        });
+    console.log("Das ist defenitiv malerei");
+    Malerei.update({ _id: req.params.id },
+      { name: b.name,
+        beschreibung: b.beschreibung
+      },
+      function (err) {
+        if(err) console.log(err)
+          res.redirect('/'+picFor);
+      });
     break;
     default:
-      console.log("ungültiges picFor!");
-      res.redirect('/');
+    console.log("ungültiges picFor!");
+    res.redirect('/');
   }
 });
 app.put("/new/kritik/ausstellung/:id", function(req,res) {
@@ -531,13 +537,16 @@ app.put("/new/kritik/ausstellung/:id", function(req,res) {
     console.log(docs[0])
     
     fs.readFile(req.files.neueKritik.path, function (err, data) {
-      var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.neueKritik.name;
+      //var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.neueKritik.name;
+      var newPath = "/serverUploads/ausstellung/"+req.files.neueKritik.name;
+      
       console.log("newPath: " + newPath);
       fs.writeFile(newPath, data, function (err) {
         if (req.files.neueKritik.name != '' && err) throw err;
 
         if (req.files.neueKritik.name != '') {
-          docs[0].kritik.push("/uploads/ausstellung/"+req.files.neueKritik.name);
+          //docs[0].kritik.push("/uploads/ausstellung/"+req.files.neueKritik.name);
+          docs[0].kritik.push("/serverUploads/ausstellung/"+req.files.neueKritik.name);
         }
 
         console.log("Neue Kritik:")
@@ -547,8 +556,8 @@ app.put("/new/kritik/ausstellung/:id", function(req,res) {
           { kritik: docs[0].kritik },
           function (err) {
             if(err) console.log(err)
-            res.redirect('/edit/ausstellung/'+req.params.id);
-        });
+              res.redirect('/edit/ausstellung/'+req.params.id);
+          });
       });
     });
   });
@@ -560,13 +569,15 @@ app.put("/new/bild/ausstellung/:id", function(req,res) {
     console.log(docs[0])
     
     fs.readFile(req.files.neuesBild.path, function (err, data) {
-      var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.neuesBild.name;
+      //var newPath = __dirname + "/public/uploads/ausstellung/"+req.files.neuesBild.name;
+      var newPath = "/serverUploads/ausstellung/"+req.files.neuesBild.name;
       console.log("newPath: " + newPath);
       fs.writeFile(newPath, data, function (err) {
         if (req.files.neuesBild.name != '' && err) throw err;
 
         if (req.files.neuesBild.name != '') {
-          docs[0].bilder.push("/uploads/ausstellung/"+req.files.neuesBild.name);
+          //docs[0].bilder.push("/uploads/ausstellung/"+req.files.neuesBild.name);
+          docs[0].bilder.push("/serverUploads/ausstellung/"+req.files.neuesBild.name);
         }
 
         console.log("Neues Bild:")
@@ -576,8 +587,8 @@ app.put("/new/bild/ausstellung/:id", function(req,res) {
           { bilder: docs[0].bilder },
           function (err) {
             if(err) console.log(err)
-            res.redirect('/edit/ausstellung/'+req.params.id);
-        });
+              res.redirect('/edit/ausstellung/'+req.params.id);
+          });
       });
     });
   });
@@ -601,26 +612,26 @@ app.delete("/delete/bild/:picFor/:id", function(req,res) {
   switch(picFor)
   {
     case 'keramik':
-      console.log("Das ist defenitiv keramik");
-      Keramik.remove({ _id: req.params.id }, function (err) {
-          res.redirect('/'+picFor);
-        });
+    console.log("Das ist defenitiv keramik");
+    Keramik.remove({ _id: req.params.id }, function (err) {
+      res.redirect('/'+picFor);
+    });
     break;
     case 'grafik':
-      console.log("Das ist defenitiv grafik");
-      Grafik.remove({ _id: req.params.id }, function (err) {
-          res.redirect('/'+picFor);
-        });
+    console.log("Das ist defenitiv grafik");
+    Grafik.remove({ _id: req.params.id }, function (err) {
+      res.redirect('/'+picFor);
+    });
     break;
     case 'malerei':
-      console.log("Das ist defenitiv malerei");
-      Malerei.remove({ _id: req.params.id }, function (err) {
-          res.redirect('/'+picFor);
-        });
+    console.log("Das ist defenitiv malerei");
+    Malerei.remove({ _id: req.params.id }, function (err) {
+      res.redirect('/'+picFor);
+    });
     break;
     default:
-      console.log("ungültiges picFor!");
-      res.redirect('/');
+    console.log("ungültiges picFor!");
+    res.redirect('/');
   }
 });
 app.delete("/delete/kritik/ausstellung/:id/*", function(req,res) {
