@@ -37,6 +37,5 @@ module.exports = function(app, config, User) {
                 title: '404'
             });
         });
-        app.use('/serverUploads', express.static(process.env.OPENSHIFT_DATA_DIR+'/serverUploads'));
     });
 };
