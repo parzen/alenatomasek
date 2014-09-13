@@ -11,6 +11,7 @@ var ipPort    = "http://" + ipaddress + ":" + port;
 
 // default to a 'localhost' configuration:
 var connection_string = 'localhost'+'/alenatomasek';
+var serverUploads = '/uploads/';
 // if OPENSHIFT env variables are present, use the available connection info:
 if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
@@ -18,10 +19,10 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
   process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
   process.env.OPENSHIFT_APP_NAME;
-  var serverUploads = process.env.OPENSHIFT_DATA_DIR+'/serverUploads';
-  console.log(serverUploads);
+  serverUploads = process.env.OPENSHIFT_DATA_DIR+'/serverUploads';
 }
-console.log("connection_string: " + connection_string)
+console.log("connection_string: " + connection_string);
+console.log("serverUploads: "+serverUploads);
 
 /**
 * Define model.
