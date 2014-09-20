@@ -306,7 +306,7 @@ app.post('/newPic/:picFor', function (req, res, next) {
 
       //newPic.bild = "/uploads/"+picFor+"/"+bild.name; 
       //newPic.bild = serverUploads + "/"+picFor+"/"+bild.name; 
-      newPic.bild = "uploads/"+picFor+"/"+bild.name; 
+      newPic.bild = "/uploads/"+picFor+"/"+bild.name; 
 
       // Write to Database
       console.log("Write New Pic in db:")
