@@ -1,0 +1,15 @@
+# Vor jedem neuem check in, die alten bilder aus public/uploads kopieren in DATA ordner
+
+1. connect to server:
+ssh 5325ab314382ec6d920006cb@nodejs-alenatomasek.rhcloud.com
+
+2. kopieren in $OPENSHIFT_DATA_DIR:
+cp -R app-root/repo/public/uploads/ app-root/data/uploads/
+
+3. einchecken:
+git add.
+git commit -m "New Msg"
+git push
+
+4. Alten stand wieder hinkopieren:
+cp -R app-root/data/uploads/ app-root/repo/public/uploads/

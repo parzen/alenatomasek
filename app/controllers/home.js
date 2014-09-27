@@ -42,8 +42,8 @@ exports.kurse = function(req, res) {
   res.render('kurse', {
     footerimg: "/image/kurse.jpg",
     headerimg: "/image/kurse_o.jpg",
-    bcblock: "#d1dfdd",
-    bcheader: "#a5bdb9",
+    bcblock: "#fed8a3",
+    bcheader: "#c79550",
     path: "kurse"
   });
 };

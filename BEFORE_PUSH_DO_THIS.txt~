@@ -1,0 +1,4 @@
+# Vor jedem neuem check in, die alten bilder aus public/uploads kopieren in 
+
+
+ssh 5325ab314382ec6d920006cb@nodejs-alenatomasek.rhcloud.com
